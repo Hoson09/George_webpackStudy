@@ -1,0 +1,32 @@
+{
+    "name": "George_webpackStudy",
+    "version": "1.0.0",
+    "description": "> 这是我自己的学习笔记，可能不是非常正确。如果对您造成困扰,我很抱歉。",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "npx webpack"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hoson09/George_webpackStudy.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Hoson09/George_webpackStudy/issues"
+    },
+    "homepage": "https://github.com/Hoson09/George_webpackStudy#readme",
+    "devDependencies": {
+        "css-loader": "^3.2.0",
+        "node-sass": "^4.12.0",
+        "sass-loader": "^7.2.0",
+        "style-loader": "^1.0.0",
+        "webpack": "^4.39.2",
+        "webpack-cli": "^3.3.7"
+    },
+    "dependencies": {
+        "lodash": "^4.17.15"
+    }
+}
