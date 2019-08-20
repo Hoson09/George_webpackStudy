@@ -1,16 +1,36 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     entry: './src/index.js',
-    mode: 'production',
-    output: {
-        filename: 'main.[hash].js',
-        path: path.resolve(__dirname, 'dist') //相对路径转换为绝对路径。
+    resolve: {
+        extensions: ['.js', '.json', '.vue'], //模块化引入js，json，vue文件的时候可以不用添加后缀，直接引进文件名即可。extensions 是添加增加的意思
+        alias: { //配置别名.
+            '@': path.resolve(__dirname, 'src/') //@代表根目录下的src文件夹内部的地址。@ === /src/
+        }
+    },
+    externals: { //外部的意思,这个属性可以把一个模块做成外部依赖，不会打包到你的output指定的js文件中去。
+        jquery: 'jQuery',
+        // Lodash: 'lodash'
     },
     module: {
         rules: [{
+            // 使用'transform-runtime' 插件告诉 babel 要引用 runtime 来代替注入。
+            test: /\.js$/,
+            exclude: /(node_modules)/, // 加快编译速度，不包含node_modules文件夹内容
+            use: [{
+                loader: 'babel-loader',
+                options: {
+                    cacheDirectory: true //转码时先读取内存，然后在转码，提高效率
+                }
+            }, {
+                loader: "eslint-loader",
+                options: {
+                    // eslint options (if necessary)
+                    fix: true
+                }
+            }]
+        }, {
             test: /\.(png|svg|jpg|gif|jpeg)$/,
             use: [{
                     loader: 'url-loader', // 根据图片大小，把图片优化成base64
@@ -41,38 +61,10 @@ module.exports = {
                     }
                 }
             ]
-        }, {
-            test: /\.(sc|c|sa)ss$/,
-            use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: true
-                        }
-                    }, {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            sourceMap: true,
-                            plugins: loader => [
-                                require('autoprefixer')({ browsers: ['> 0.15% in CN'] }) // 添加前缀
-                            ]
-                        }
-                    }, {
-                        loader: "sass-loader",
-                        options: {
-                            sourceMap: true
-                        }
-                    }
-                ] //处理顺序从右向左进行
         }]
     },
     plugins: [
-        new MiniCssExtractPlugin({ //提取css文件的
-            filename: '[name][hash].css', // 设置最终输出的文件名 //带哈希的原因是为了避免缓存的问题。
-            chunkFilename: '[id][hash].css'
-        }), new HtmlWebpackPlugin({
+        new HtmlWebpackPlugin({
             title: 'George', // 默认值：Webpack App
             filename: 'main.html', // 输出到dist的html文件名  默认值：'index.html'
             template: path.resolve(__dirname, 'src/main.html'), //指定的模板
@@ -81,6 +73,6 @@ module.exports = {
                 removeComments: true, //移除注释
                 removeAttributeQuotes: true // 移除属性的引号
             }
-        }), new CleanWebpackPlugin()
+        }), new CleanWebpackPlugin() //清理
     ]
 };

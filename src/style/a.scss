@@ -1,7 +1,10 @@
-$bgc:#c09;
+$bgc:#c98;
 .box {
     background-color: $bgc;
-    font-size: 30px;
+    font-size: 20px;
+    color: #095;
+    border: 1px solid yellowgreen;
     display: flex;
+    border-radius: 5px;
     background: url('../asset/img/main1.png'); //最好写成相对路径的格式,要不然不会显示
 }
